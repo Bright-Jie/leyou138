@@ -1,0 +1,20 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: page-service
+  thymeleaf:
+    cache: false
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  rabbitmq:
+    host: 127.0.0.1
+    virtual-host: /leyou138
+    username: leyou138
+    password: leyou
+ly:
+  static:
+    itemDir: D:\ly_guangzhou138\software\nginx-1.16.0\html\item #静态页服务器地址
+    itemTemplate: item #模板名称

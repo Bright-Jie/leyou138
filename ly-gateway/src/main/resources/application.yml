@@ -1,0 +1,62 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://manage.leyou.com"
+              - "http://www.leyou.com"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 360000
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - HEAD
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback
+      routes:
+        - id: item-service   # 路由id,可以随意写
+          # 代理的服务地址；lb表示负载均衡(从eureka中获取具体服务)
+          uri: lb://item-service
+          # 路由断言，可以配置映射路径
+          predicates:
+            - Path=/api/item/**
+          filters:
+            # 表示过滤1个路径，2表示两个路径，以此类推
+            - StripPrefix=2
+        - id: upload-service
+          uri: lb://upload-service
+          predicates:
+            - Path=/api/upload/**
+          filters:
+            - StripPrefix=2
+        - id: search-service
+          uri: lb://search-service
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - StripPrefix=2
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #设置API网关中路由转发请求的HystrixCommand执行超时时间
+            timeoutInMilliseconds: 5000

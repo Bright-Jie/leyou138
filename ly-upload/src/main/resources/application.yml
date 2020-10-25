@@ -1,0 +1,21 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: upload-service
+  servlet:
+    multipart:
+      max-file-size: 5MB # 限制文件上传的大小
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+ly:
+  oss:
+    accessKeyId: LTAI4GEMB846GXvyDNmM2ZVs
+    accessKeySecret: kgICbP5vsbqXP8LY4H2DVilGJF1ENo
+    host: http://image.leyou.com # 访问oss的域名，很重要bucket + endpoint
+    endpoint: oss-cn-guangzhou.aliyuncs.com # 你的服务的端点，不一定跟我一样
+    dir: "" # 保存到bucket的某个子目录
+    expireTime: 20 # 过期时间，单位是S
+    maxFileSize: 5242880 #文件大小限制，这里是5M
